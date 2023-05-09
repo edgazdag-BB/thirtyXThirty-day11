@@ -1,0 +1,23 @@
+<ng-container>
+  <mat-toolbar class="nav-header" color="primary">
+    <span>30 X 30 - Day 11-13 - The Reactive Cycle Begins!</span>
+    <mat-divider [vertical] ="true" class="divider"></mat-divider>
+    <button mat-button routerLink="home">
+      <mat-icon>home</mat-icon>
+      Home
+    </button>
+    <mat-divider [vertical] ="true" class="divider" ></mat-divider>
+    <button mat-button routerLink="songs">
+      <mat-icon>music_note</mat-icon>
+      Songs
+    </button>
+    <mat-divider [vertical]="true" class="divider"></mat-divider>
+    <button mat-button (click)="logout()">
+      <mat-icon>account_box</mat-icon>
+      Log Out
+    </button>
+  </mat-toolbar>
+  <div class="content">
+    <router-outlet></router-outlet>
+  </div>
+</ng-container>

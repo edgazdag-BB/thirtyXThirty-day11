@@ -1,0 +1,45 @@
+<div class="flex">
+  <button mat-raised-button color="primary" (click)="addSong.emit()">
+    Add Song
+  </button>
+</div>
+<br>
+<table mat-table *ngIf="songList" [dataSource]="songList" class="mat-elevation-z8">
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef> ID </th>
+    <td mat-cell *matCellDef="let song"> {{ song.id }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Song Name </th>
+    <td mat-cell *matCellDef="let song"> {{ song.name }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="artist">
+    <th mat-header-cell *matHeaderCellDef> Artist </th>
+    <td mat-cell *matCellDef="let song"> {{ song.artistName }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="album">
+    <th mat-header-cell *matHeaderCellDef> Album </th>
+    <td mat-cell *matCellDef="let song"> {{ song.albumName }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="genre">
+    <th mat-header-cell *matHeaderCellDef> Genre </th>
+    <td mat-cell *matCellDef="let song"> {{ song.genre }} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="delete">
+    <th mat-header-cell *matHeaderCellDef>Delete</th>
+    <td mat-cell *matCellDef="let song;">
+      <button mat-stroked-button color="warn" (click)="deleteClicked($event, song.id)">
+        <mat-icon >clear</mat-icon>
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr class="data-row" mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editSong.emit(row)"></tr>
+</table>
+<mat-spinner *ngIf=""></mat-spinner>
