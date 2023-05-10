@@ -1,0 +1,36 @@
+<div class="flex">
+  <mat-card  class="mat-elevation-z8 ">
+    <mat-card-header>Song Information</mat-card-header>
+    <form [formGroup]="songForm" (ngSubmit)="saveSong.emit()">
+      <mat-form-field appearance="standard">
+        <mat-label>Song Name</mat-label>
+        <input matInput id="name" name="name" type="text"  formControlName="name">
+        <mat-error *ngIf="songForm.controls['name'].errors?.['required']">Song Name is required</mat-error>
+      </mat-form-field>
+     
+      <mat-form-field appearance="standard">
+        <mat-label>Artist Name</mat-label>
+        <input matInput id="artistName" name="artistName" type="text"  formControlName="artistName">
+        <mat-error *ngIf="songForm.controls['artistName'].errors?.['required']">Artist Name is required</mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="standard">
+        <mat-label>Album Name</mat-label>
+        <input matInput id="albumName" name="albumName" type="text"  formControlName="albumName">
+        <mat-error *ngIf="songForm.controls['albumName'].errors?.['required']">Album Name is required</mat-error>
+      </mat-form-field>
+     
+      <mat-label>Genre</mat-label>
+      <mat-radio-group required class="radio-group" formControlName="genre">
+        <mat-radio-button class="radio-button" *ngFor="let genre of songGenres" [value]="genre">
+          {{genre}}
+        </mat-radio-button>
+      </mat-radio-group>
+      <mat-error *ngIf="songForm.controls['genre'].errors?.['required']">Genre is required</mat-error>
+      
+      <div class="flex">
+        <button mat-raised-button color="primary" type="submit" [disabled]="!songForm.valid">Save Song</button>
+      </div>
+  </form>
+  </mat-card>
+</div>

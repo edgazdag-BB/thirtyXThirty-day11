@@ -1,0 +1,18 @@
+<div class="flex">
+  <app-song-list class="list-component"
+    [displayedColumns]="displayedColumns"
+    [songList]="(songService.songList$ | async) ?? []"
+    (addSong)="addSong()"
+    (editSong)="setCurrentSong($event)"
+    (deleteSong)="deleteSong($event)"
+  >
+  </app-song-list>
+  <div class="flex" *ngIf="currentSong$ | async">
+    <app-song-detail *ngIf="songForm$ | async as songForm"
+      class="detail-component"
+      [songForm]="songForm"
+      [songGenres]="songService.songGenres"
+      (saveSong)="saveSong()"
+    ></app-song-detail>
+  </div>
+</div>
