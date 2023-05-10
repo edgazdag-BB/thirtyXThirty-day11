@@ -16,13 +16,13 @@ export class SongService {
   songGenres: string[] = ['Rock', 'Pop', 'Hip-Hop', ];
   
   private songsSubject$$ = new BehaviorSubject<Song[]>([]);
-  private currentSong$$ = new BehaviorSubject<Song>({id: 0, name: '', artistName: '', albumName: '', genre: ''});
+  private currentSong$$ = new BehaviorSubject<Song | undefined>(undefined);
 
   get songList$(): Observable<Song[]> {
     return this.songsSubject$$.asObservable();
   }
 
-  get currentSong$(): Observable<Song> {
+  get currentSong$(): Observable<Song | undefined> {
     return this.currentSong$$.asObservable();
   }
 
@@ -54,6 +54,12 @@ export class SongService {
       .subscribe();
   }
   
+  saveSong(song: Song) {
+    !this.currentSong$$.value?.id ?
+      this.createSong({...song, id: 0}) : 
+      this.updateSong({...song, id: this.currentSong$$.value?.id});
+  }
+
   createSong(song: Song) {
     this.http.post<Song>(`${this.API_URL}songs/`, song, this.httpOptions)
       .pipe(
@@ -79,11 +85,9 @@ export class SongService {
   deleteSong(id: number) {
     this.http.delete<Song>(`${this.API_URL}songs/${id}`, this.httpOptions)
       .pipe(
-        tap(() => {
-          const songs: Song[] = this.songsSubject$$.value.filter(s => s.id !== id);
-          this.songsSubject$$.next([...songs]);
-        }),
-        tap(() => this.currentSong$$.next({id: 0, name: '', artistName: '', albumName: '', genre: ''})),
+        tap(() => this.songsSubject$$.next([...this.songsSubject$$.value.filter(s => s.id !== id)])),
+        tap(() => this.currentSong$$.next(undefined)),
+        tap(() => this.getAllSongs()),
         catchError(this.handleError<Song>('deleteSong'))
       )
       .subscribe();

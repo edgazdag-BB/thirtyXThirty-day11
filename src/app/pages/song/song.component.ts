@@ -20,10 +20,12 @@ export class SongComponent implements OnInit {
   });
 
   songForm$ = this.songService.currentSong$.pipe(
-    tap(s => this.songForm.patchValue(s)),
+    tap(s => s ? this.songForm.patchValue(s) : this.songForm.reset()),
     map(s => this.songForm)
   );
   
+  currentSong$ = this.songService.currentSong$;
+
   constructor(public songService: SongService) {}
 
   ngOnInit(): void {
@@ -35,16 +37,14 @@ export class SongComponent implements OnInit {
   }
 
   addSong() {
-    this.songService.setCurrentSong({id: null, name: '', artistName: '', albumName: '', genre: ''});
-    this.songForm.reset();
+    this.songService.setCurrentSong({name: '', artistName: '', albumName: '', genre: ''});
+    //this.songForm.reset();
   }
 
   saveSong() {
     const song = this.songForm.value as Omit<Song, 'id'>;
 
-    this.songService.getCurrentSong().id === null ?
-      this.songService.createSong({...song, id: 0}) : 
-      this.songService.updateSong({...song, id: this.songService.getCurrentSong().id});
+    this.songService.saveSong(song);
   }
 
   deleteSong(id: number) {

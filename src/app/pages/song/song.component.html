@@ -7,7 +7,7 @@
     (deleteSong)="deleteSong($event)"
   >
   </app-song-list>
-  <div class="flex" *ngIf="songService.getCurrentSong().id !== 0">
+  <div class="flex" *ngIf="currentSong$ | async">
     <app-song-detail *ngIf="songForm$ | async as songForm"
       class="detail-component"
       [songForm]="songForm"
